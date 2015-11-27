@@ -164,7 +164,7 @@ public class MenuOpenListener implements ActionListener {
 					BufferedWriter out = new BufferedWriter(new FileWriter(new File(
 							"recent.txt"),false));
 					
-					out.write(file[0].getAbsolutePath()+" "+type+"\n");
+					out.write(file[0].getAbsolutePath()+"\t"+type+"\n");
 					out.write(content);
 					
 					out.close();

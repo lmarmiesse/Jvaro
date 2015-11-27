@@ -240,7 +240,7 @@ public class GeneralFrame extends JFrame implements Observer {
 
 			for (int i = 0; i < 5; i++) {
 				if (input != null) {
-					final String[] ligne = input.split(" ");
+					final String[] ligne = input.split("\t");
 					JMenuItem item = new JMenuItem(ligne[0]);
 					item.addActionListener(new ActionListener() {
 
