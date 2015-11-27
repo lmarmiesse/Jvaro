@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config
+END
+MissingReferableException.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/MissingReferableException.java
+END
+FileConfigParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/FileConfigParser.java
+END
+URLConfigParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/URLConfigParser.java
+END
+XmlConfigException.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlConfigException.java
+END
+XmlConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlConfig.java
+END
+XmlNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlNode.java
+END
+ConstConfigParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/ConstConfigParser.java
+END
+XmlArgException.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlArgException.java
+END
+XmlPrint.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlPrint.java
+END
+StreamConfigParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/StreamConfigParser.java
+END
+XmlUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/xml/config/XmlUtil.java
+END

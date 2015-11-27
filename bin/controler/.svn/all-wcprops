@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/cpr_metabo/!svn/ver/286/elo_debut/src/controler
+END
+RulesListSelectionListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/RulesListSelectionListener.java
+END
+ChangeTabListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/ChangeTabListener.java
+END
+ExtensionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/ExtensionFilter.java
+END
+Filter.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/Filter.java
+END
+NewProjectListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/NewProjectListener.java
+END
+Download.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/Download.java
+END
+Var.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/Var.java
+END
+MyDocumentListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/MyDocumentListener.java
+END
+DownloadContentThread.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/DownloadContentThread.java
+END
+MainControler.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/cpr_metabo/!svn/ver/285/elo_debut/src/controler/MainControler.java
+END

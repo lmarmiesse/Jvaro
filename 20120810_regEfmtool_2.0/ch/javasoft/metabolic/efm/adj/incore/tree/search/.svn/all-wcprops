@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search
+END
+TestMethod.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/TestMethod.java
+END
+PatternTreeLinearSearchAdjacencyEnumerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/PatternTreeLinearSearchAdjacencyEnumerator.java
+END
+LinearSearchRoot.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/LinearSearchRoot.java
+END
+PatternTreeLogLogAdjacencyEnumerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/PatternTreeLogLogAdjacencyEnumerator.java
+END
+PatternTreeMinZerosAdjacencyEnumerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/PatternTreeMinZerosAdjacencyEnumerator.java
+END
+SearchRoot.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/adj/incore/tree/search/SearchRoot.java
+END

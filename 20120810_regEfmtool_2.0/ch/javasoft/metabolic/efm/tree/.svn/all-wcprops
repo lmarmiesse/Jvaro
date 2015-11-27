@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree
+END
+AdjacencyPrecondition.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/AdjacencyPrecondition.java
+END
+TreeMemAdjEnum.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/TreeMemAdjEnum.java
+END
+Node.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/Node.java
+END
+AdjacencyFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/AdjacencyFilter.java
+END
+InterNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/InterNode.java
+END
+Partition.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/Partition.java
+END
+TreePairTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/TreePairTraverser.java
+END
+BitPatternTree.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/BitPatternTree.java
+END
+TreeTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/TreeTraverser.java
+END
+LeafNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/LeafNode.java
+END

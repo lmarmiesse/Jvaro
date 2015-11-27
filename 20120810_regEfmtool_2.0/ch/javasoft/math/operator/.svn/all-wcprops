@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator
+END
+ConvertingBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/ConvertingBinaryOperator.java
+END
+AbstractIntBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractIntBinaryOperator.java
+END
+BooleanBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/BooleanBinaryOperator.java
+END
+BinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/BinaryOperator.java
+END
+AggregatingBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AggregatingBinaryOperator.java
+END
+TernaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/TernaryOperator.java
+END
+NullaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/NullaryOperator.java
+END
+QuaternaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/QuaternaryOperator.java
+END
+AbstractIntUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractIntUnaryOperator.java
+END
+ConvertingUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/ConvertingUnaryOperator.java
+END
+UnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/UnaryOperator.java
+END
+AggregatingUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AggregatingUnaryOperator.java
+END
+BooleanUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/BooleanUnaryOperator.java
+END
+IntBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/IntBinaryOperator.java
+END
+DivisionSupport.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/DivisionSupport.java
+END
+AbstractBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractBinaryOperator.java
+END
+AbstractBooleanBinaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractBooleanBinaryOperator.java
+END
+AbstractTernaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractTernaryOperator.java
+END
+NAryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/NAryOperator.java
+END
+IntUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/IntUnaryOperator.java
+END
+AbstractNullaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractNullaryOperator.java
+END
+AbstractQuaternaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractQuaternaryOperator.java
+END
+AbstractUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractUnaryOperator.java
+END
+AbstractBooleanUnaryOperator.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/math/operator/AbstractBooleanUnaryOperator.java
+END

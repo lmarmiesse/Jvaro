@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column
+END
+FractionalColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/FractionalColumn.java
+END
+AbstractColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/AbstractColumn.java
+END
+VarIntColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/VarIntColumn.java
+END
+ColumnFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/ColumnFactory.java
+END
+ColumnHome.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/ColumnHome.java
+END
+RawBigIntegerColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/RawBigIntegerColumn.java
+END
+DoubleColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/DoubleColumn.java
+END
+VarIntMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/VarIntMatrix.java
+END
+ColumnPair.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/ColumnPair.java
+END
+AbstractHome.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/AbstractHome.java
+END
+BigIntegerColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/BigIntegerColumn.java
+END
+Column.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/Column.java
+END
+ColumnFactories.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/ColumnFactories.java
+END
+AdjCandidates.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/column/AdjCandidates.java
+END

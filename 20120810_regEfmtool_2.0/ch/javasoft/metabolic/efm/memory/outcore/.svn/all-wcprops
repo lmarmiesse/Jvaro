@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore
+END
+Cache.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/Cache.java
+END
+LogPkg.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/LogPkg.java
+END
+OutOfCoreMemoryFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/OutOfCoreMemoryFactory.java
+END
+OutOfCoreMemory.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/OutOfCoreMemory.java
+END
+Recovery.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/Recovery.java
+END
+SortInCoreOutOfCoreMemoryFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/memory/outcore/SortInCoreOutOfCoreMemoryFactory.java
+END

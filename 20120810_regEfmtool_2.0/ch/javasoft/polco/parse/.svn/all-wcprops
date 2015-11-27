@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse
+END
+CddParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/CddParserFactory.java
+END
+InputStreamParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/InputStreamParserFactory.java
+END
+TextParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/TextParser.java
+END
+LogPkg.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/LogPkg.java
+END
+PolymakeParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/PolymakeParserFactory.java
+END
+CddParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/CddParser.java
+END
+MpsFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/MpsFactory.java
+END
+InputStreamParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/InputStreamParser.java
+END
+TextParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/TextParserFactory.java
+END
+MpsParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/MpsParser.java
+END
+PolymakeParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/parse/PolymakeParser.java
+END

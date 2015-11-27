@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat
+END
+ReservedMatrixWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/ReservedMatrixWriter.java
+END
+VariableWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/VariableWriter.java
+END
+ReservedComplexWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/ReservedComplexWriter.java
+END
+MatFileHeader.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/MatFileHeader.java
+END
+MatOutputStreamWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/MatOutputStreamWriter.java
+END
+ReservedWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/ReservedWriter.java
+END
+MatFileWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/MatFileWriter.java
+END
+MatWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/MatWriter.java
+END

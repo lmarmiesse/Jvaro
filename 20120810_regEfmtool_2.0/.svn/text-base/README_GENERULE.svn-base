@@ -1,0 +1,1345 @@
+Background information about the boolean rules and their implementation
+=======================================================================
+
+-------------------------------------------------------------------------------
+Introduction
+-------------------------------------------------------------------------------
+
+The regEfmtool extension supports the following boolean operations:
+
+Operation | character used in rule file
+----------+----------------------------
+NOT       |     !
+OR        |     |
+AND       |     &
+
+A reaction R either carries a flux (R = 1)
+or it does not carry a flux (R = 0).
+
+The gene regulatory information is provided to regEfmtool by using
+the command line argument '-generule' and a file name.
+This file has to be a plain text file that contains a single line for each rule.
+Comment lines start with the character '#'.
+For the rest of this document the gene rule file is simply called 'grfile'.
+
+
+-------------------------------------------------------------------------------
+Supported types of gene rules
+-------------------------------------------------------------------------------
+
+The gene-enzyme-reaction mapping is typically provided by boolean rules, e.g R2 = !R1.
+Which means that a) the reaction R2 must not carry a flux, if R1 carries a flux and
+b) the reaction R2 must carry a flux, if R1 does not carry a flux.
+Naturally, much more complex boolean rules occur in real-world metabolic networks.
+These more complex rules can be described by combinations of NOT, OR, and AND operations.
+
+However, very often the boolean rule is not defined
+for both possible input states (0 and 1) of a reaction.
+E.g. rather frequently the simple rule R2 = !R1 is only valid either for R1 = 1 or for R1 = 0.
+In order to be able to cover this situation a special concept was introduced in the extension.
+Beside the states 0 (false) and 1 (true), this concept uses a third state: 'undefined'.
+Furthermore, each input reaction is assigned an activity type.
+A reaction is either 0-active, 1-active or full-active (also called f-active):
+1) If a reaction is 0-active then the value of this reaction is only defined if it is 0.
+   If the boolean rule is evaluated for a 0-active reaction that has the value 1,
+   then the effect on the output reaction is unknown and, hence, set to 'undefined'.
+2) If a reaction is 1-active then the value of this reaction is only defined if it is 1.
+   If the boolean rule is evaluated for a 1-active reaction that has the value 0,
+   then effect on the output reaction is unknown and, hence, set to 'undefined'.
+3) If a reaction is f-active then the value of this reaction is defined for '0' and '1'.
+
+In order to indicate the activity type of a reaction, the prefix '0', '1' or 'f' must be used in the grfile,
+e.g. if the reaction R7 is a 0-active reaction then it must be named 0R7 in the grfile, whereas
+a full-active reaction R3 would be denoted fR3. Hence, a gene rule file might have the following content:
+R3 = (!0R1)
+R11 = (!((!0R3) | 1R5))
+R8 = (!fR15)
+
+Note that:
+1) The output reaction must never be an input reaction,
+   e.g. R3 = (!((!0R3) | 1R1)) is an invalid rule, as R3 is an input and output reaction
+
+2) A reaction can occur several times as input value,
+   e.g. R11 = ((!((!0R3) | 1R5)) & 1R3) is a perfectly valid rule
+
+3) The prefix of a reaction is only valid for the regarding boolean operation,
+   e.g. in rule R11 = ((!((!0R3) | 1R5)) & 1R3) the reaction R3 is 0-active
+   in the OR operation and 1-active in the AND operation
+
+4) Each operation must be enclosed by exactly one pair of parenthesis,
+   e.g. R3 = (!0R1) is syntactically correct, whereas
+   R3 = ((!0R1)) or R3 = !0R1 is incorrect.
+
+5) There is no identity operation which would represent the relation R2 = R1,
+   the identity operation can be obtained by using the following statement:
+   R2 = (fR1 | fR1)
+
+-------------------------------------------------------------------------------
+The NOT operation
+-------------------------------------------------------------------------------
+   
+The NOT operation can occur in three forms:
+1) R2 = (!0R1)
+2) R2 = (!1R1)
+3) R3 = (!fR1)
+
+1) R2 = (!0R1)
+--------------
+
+R1    || R2 = (!0R1)
+-------------------
+0     || 1
+1->u  || u
+u     || u
+
+2) R2 = (!1R1)
+--------------
+
+R1    || R2 = (!1R1)
+--------------------
+0->u  || u
+1     || 0
+u     || u
+
+3) R2 = (!fR1)
+--------------
+
+R1 || R2 = (!fR1)
+-----------------
+0  || 1
+1  || 0
+u  || u
+
+-------------------------------------------------------------------------------
+The OR operation
+-------------------------------------------------------------------------------
+
+The OR operation can occur in the following forms:
+1) R3 = (0R1 | 0R2)
+2) R3 = (0R1 | 1R2)
+3) R3 = (1R1 | 1R2)
+4) R3 = (0R1 | fR2)
+5) R3 = (1R1 | fR2)
+6) R3 = (fR1 | fR2)
+
+1) R3 = (0R1 | 0R2)
+-------------------
+
+R1     | R2     || R3 = (0R1 | 0R2)
+-----------------------------------
+0      | 0      || 0
+1->u   | 0      || u
+u      | 0      || u
+0      | 1->u   || u
+1->u   | 1->u   || u
+u      | 1->u   || u
+0      | u      || u
+1->u   | u      || u
+u      | u      || u
+
+2) R3 = (0R1 | 1R2)
+-------------------
+
+R1     | R2     || R3 = (0R1 | 1R2)
+-----------------------------------
+0      | 0->u   || u
+1->u   | 0->u   || u
+u      | 0->u   || u
+0      | 1      || 1
+1->u   | 1      || 1
+u      | 1      || 1
+0      | u      || u
+1->u   | u      || u
+u      | u      || u
+
+3) R3 = (1R1 | 1R2)
+-------------------
+
+R1     | R2     || R3 = (1R1 | 1R2)
+-----------------------------------
+0->u   | 0->u   || u
+1      | 0->u   || 1
+u      | 0->u   || u
+0->u   | 1      || 1
+1      | 1      || 1
+u      | 1      || 1
+0->u   | u      || u
+1      | u      || 1
+u      | u      || u
+
+4) R3 = (0R1 | fR2)
+-------------------
+
+R1     | R2     || R3 = (0R1 | fR2)
+-----------------------------------
+0      | 0      || 0
+1->u   | 0      || u
+u      | 0      || u
+0      | 1      || 1
+1->u   | 1      || 1
+u      | 1      || 1
+0      | u      || u
+1->u   | u      || u
+u      | u      || u
+
+5) R3 = (1R1 | fR2)
+-------------------
+
+R1     | R2     || R3 = (1R1 | fR2)
+-----------------------------------
+0->u   | 0      || u
+1      | 0      || 1
+u      | 0      || u
+0->u   | 1      || 1
+1      | 1      || 1
+u      | 1      || 1
+0->u   | u      || u
+1      | u      || 1
+u      | u      || u
+
+6) R3 = (fR1 | fR2)
+-------------------
+
+R1     | R2     || R3 = (fR1 | fR2)
+-----------------------------------
+0      | 0      || 0
+1      | 0      || 1
+u      | 0      || u
+0      | 1      || 1
+1      | 1      || 1
+u      | 1      || 1
+0      | u      || u
+1      | u      || 1
+u      | u      || u
+
+-------------------------------------------------------------------------------
+The AND operation
+-------------------------------------------------------------------------------
+
+The AND operation can occur in the following forms:
+1) R3 = (0R1 & 0R2)
+2) R3 = (0R1 & 1R2)
+3) R3 = (1R1 & 1R2)
+4) R3 = (0R1 & fR2)
+5) R3 = (1R1 & fR2)
+6) R3 = (fR1 & fR2)
+
+1) R3 = (0R1 & 0R2)
+-------------------
+
+R1     | R2     || R3 = (0R1 & 0R2)
+-----------------------------------
+0      | 0      || 0
+1->u   | 0      || 0
+u      | 0      || 0
+0      | 1->u   || 0
+1->u   | 1->u   || u
+u      | 1->u   || u
+0      | u      || u
+1->u   | u      || u
+u      | u      || u
+
+2) R3 = (0R1 & 1R2)
+-------------------
+
+R1     | R2     || R3 = (0R1 & 1R2)
+-----------------------------------
+0      | 0->u   || 0
+1->u   | 0->u   || u
+u      | 0->u   || u
+0      | 1      || 0
+1->u   | 1      || u
+u      | 1      || u
+0      | u      || 0
+1->u   | u      || u
+u      | u      || u
+
+3) R3 = (1R1 & 1R2)
+-------------------
+
+R1     | R2     || R3 = (1R1 & 1R2)
+-----------------------------------
+0->u   | 0->u   || u
+1      | 0->u   || u
+u      | 0->u   || u
+0->u   | 1      || u
+1      | 1      || 1
+u      | 1      || u
+0->u   | u      || u
+1      | u      || u
+u      | u      || u
+
+4) R3 = (0R1 & fR2)
+-------------------
+
+R1     | R2     || R3 = (0R1 & fR2)
+-----------------------------------
+0      | 0      || 0
+1->u   | 0      || 0
+u      | 0      || 0
+0      | 1      || 0
+1->u   | 1      || u
+u      | 1      || u
+0      | u      || 0
+1->u   | u      || u
+u      | u      || u
+
+5) R3 = (1R1 & fR2)
+-------------------
+
+R1     | R2     || R3 = (1R1 & fR2)
+-----------------------------------
+0->u   | 0      || 0
+1      | 0      || 0
+u      | 0      || 0
+0->u   | 1      || u
+1      | 1      || 1
+u      | 1      || u
+0->u   | u      || u
+1      | u      || u
+u      | u      || u
+
+6) R3 = (fR1 & fR2)
+-------------------
+
+R1     | R2     || R3 = (fR1 & fR2)
+-----------------------------------
+0      | 0      || 0
+1      | 0      || 0
+u      | 0      || 0
+0      | 1      || 0
+1      | 1      || 1
+u      | 1      || u
+0      | u      || u
+1      | u      || u
+u      | u      || u
+
+--------------------------------------------------------------------------------
+Iteration phase rules
+--------------------------------------------------------------------------------
+
+All rules that only require input reactions with the value 1
+and an output reaction with the value 0 can be used during the iteration phase.
+These rules are realized by a bit pattern vector.
+Bits of the vector are set to 1 for all involved input reactions and
+also for the output reaction. Such a bit pattern is created for each iteration phase rule.
+All modes are checked against the iteration phase rules by simply checking
+if all bits of the pattern are set in the tested mode.
+If so then the mode disobeys the rule and is removed.
+E.g. assume a network with 9 reaction (R1 - R9). Let there be a regulatory rule
+R5 = (!1R2) which means if R2 = 1 then R5 must be 0. Hence, if R2 and R5 are 1
+then the rule is disobeyed and the mode can be removed. The bit pattern
+of the rule would look as follows: 010010000
+
+If, for instance, the mode 011011101 is checked against the rule then a simple AND operation
+of 010010000 and 011011101 would result in 010010000 showing that all bits
+of the rule bit pattern are also set in the mode and, hence, the mode can be removed.
+
+Note that efmtool and, hence, regEfmtool uses an inverse logic meaning that R = 1 if the reaction
+does not carry a flux and that R = 0 if the reaction carries a flux.
+Consequently, the bitwise operations for creating and checking iteration phase
+rules have to be changed accordingly
+
+--------------------------------------------------------------------------------
+Post-processing rules
+--------------------------------------------------------------------------------
+
+If a rule does not qualify for the iteration phase then it can still be used
+in the post processing phase when all modes have been computed. Actually,
+all rules qualify for being used in the post-processing phase. The check
+in the post-processing phase is done by utilizing a reverse polish notation.
+For each rule a reverse polish notation stack is generated and stored.
+This stack contains a) the operations (!,|, and &) and b) the reaction index.
+If a mode is going to be checked then the stack is taken and each reaction
+index is replaced by the according boolean value of the mode (0, 1, or undefined).
+Then the stack is executed. The result of the execution is either 0, 1, or undefined.
+If the result is undefined then the mode is not eliminated, as the effect on the output
+reaction is unknown. Otherwise we check if the value of the output reaction given
+by the mode is identical to the output reaction given by the gene rule.
+If the values coincide then the mode obeys the rule and is kept.
+If the values do not coincide then the mode is removed.
+
+--------------------------------------------------------------------------------
+gene file used in Ecoli core test case
+for details see Orth et al., doi:10.1128/ecosal.10.2.1. 2009
+--------------------------------------------------------------------------------
+# 01: R EX glc e = 1 --> R EX2 ac e = 0
+R_EX_ac_e = (!1R_EX_glc_e)
+
+# 02: R EX glc e = 1 --> R ICL = 0
+R_ICL = (!1R_EX_glc_e)
+
+# 03: R EX glc e = 0 -->  R FORt2 = 1
+R_FORt2 = (!0R_EX_glc_e)
+
+# 04: R EX glc e = 0 --> FORti = 1
+R_FORti = (!0R_EX_glc_e)
+
+# 05: R EX glc e = 0 -> R GLNS = 1
+R_GLNS = (!0R_EX_glc_e)
+
+# 06: R EX glc e = 0 --> R PFL = 1
+R_PFL = (!0R_EX_glc_e)
+
+# 07: R EX glc e = 0 --> R ACKr = 1
+R_ACKr = (!0R_EX_glc_e)
+
+# 08: R EX glc e = 0 --> R GLCpts = 0
+R_GLCpts = (0R_EX_glc_e | 0R_EX_glc_e)
+
+# 09: R EX o2 e = 0 --> R FORt2 = 1
+R_FORt2 = (!0R_EX_o2_e)
+
+# 10: R EX o2 e = 0 --> FORti = 1
+R_FORti = (!0R_EX_o2_e)
+
+# 11: R EX o2 e = 0 --> R FRD7 = 1
+R_FRD7 = (!0R_EX_o2_e)
+
+# 12: R EX o2 e = 0 --> R PFL = 1
+R_PFL = (!0R_EX_o2_e)
+
+# 13: R EX o2 e = 0 --> R ACKr = 1
+R_ACKr = (!0R_EX_o2_e)
+
+# 14: R EX o2 e = 0 --> R MDH = 0
+R_MDH = (0R_EX_o2_e | 0R_EX_o2_e)
+
+# 15: R EX o2 e = 0 --> R NADH16 = 0
+R_NADH16 = (0R_EX_o2_e | 0R_EX_o2_e)
+
+# 16: R EX o2 e = 0 --> R ICL = 0
+R_ICL = (0R_EX_o2_e | 0R_EX_o2_e)
+
+# 17: R EX glu L e = 1 --> R GLUDy = 0
+R_GLUDy = (!1R_EX_glu_L_e)
+
+# 18: R EX glu L e = 1 --> R GLUSy = 0
+R_GLUSy = (!1R_EX_glu_L_e)
+
+# 19: R EX nh4 e = 0 --> R GLUDy = 0
+R_GLUDy = (0R_EX_nh4_e | 0R_EX_nh4_e)
+
+# 20: R EX nh4 e = 0 --> R GLUSy = 0
+R _GLUSy = (0R_EX_nh4_e | 0R_EX_nh4_e)
+
+# 21: R EX pi e = 0 --> R PIt2r = 0
+R_PIt2r = (0R_EX_pi_e | 0R_EX_pi_e)
+
+# 22: R EX glc e = 1 AND R EX2 ac e = 0 --> R MALS = 0
+R_MALS = (!(1R_EX_glc_e & (!0R_EX_ac_e)))
+
+# 23: R EX o2 e = 0 AND R EX2 ac e = 0 --> R MALS = 0
+R_MALS = (!((!0R_EX_o2_e) & (!0R_EX_ac_e)))
+
+# 24: R EX o2 e = 0 AND R EX2 ac e = 0 --> R D LACt2 = 0
+R_D_LACt2 = (!((!0R_EX_o2_e) & (!0R_EX_ac_e)))
+
+# 25: R EX o2 e = 1 AND R EX2 ac e = 1 --> R D LACt2 = 1
+R_D_LACt2 = (1R_EX_o2_e & 1R_EX_ac_e)
+
+# 26: R EX o2 e = 1 AND R BIOMASS = 0 --> R ACALD = 0
+R_ACALD = (!(1R_EX_o2_e & (!0R_BIOMASS)))
+
+# 27: R EX o2 e = 1 R BIOMASS = 0 --> R ALCD2x = 0
+R_ALCD2x = (!(1R_EX_o2_e & (!0R_BIOMASS)))
+
+# 28: R EX o2 e = 0 R BIOMASS = 1 --> R ACALD = 1
+R_ACALD = ((!0R_EX_o2_e) & 1R_BIOMASS)
+
+# 29: R EX o2 e = 0 R BIOMASS = 1 --> R ALCD2x = 1
+R_ALCD2x = ((!0R_EX_o2_e) & 1R_BIOMASS)
+
+# 30: R EX glc e = 0 AND R EX o2 e = 1 AND R EX2 ac e = 1 --> R MALS = 1
+R_MALS = (((!0R_EX_glc_e) & 1R_EX_o2_e) & 1R_EX_ac_e)
+
+# 31: R EX glc e = 1 AND R BIOMASS = 0 AND R EX o2 e = 0 --> R SUCCDi = 0
+R_SUCDi = (!((1R_EX_glc_e & (!0R_BIOMASS)) & (!0R_EX_o2_e)))
+
+# 32: R EX glc e = 0 AND R EX o2 e = 1 --> R SUCDi = 1
+R_SUCDi = ((!0R_EX_glc_e) & 1R_EX_o2_e)
+
+# 33: R BIOMASS = 1 AND R EX o2 e = 1 --> R SUCDi = 1
+R_SUCDi = (1R_BIOMASS & 1R_EX_o2_e)
+
+# 34: R EX succ e = 1 --> R FRD7 = 1
+R_FRD7 = (1R_EX_succ_e | 1R_EX_succ_e)
+
+# 35: R EX fum e = 1 --> R FRD7 = 1
+R_FRD7 = (1R_EX_fum_e | 1R_EX_fum_e)
+
+# 36: R EX mal L e = 1 --> R FRD7 = 1
+R_FRD7 = (1R_EX_mal_L_e | 1R_EX_mal_L_e)
+
+# 37: R EX o2 e = 1 R EX glc e = 0 --> R FUM = 1
+R_FUM = (1R_EX_o2_e & (!0R_EX_glc_e))
+
+# 38: R EX o2 e = 1 AND R EX succ e = 1 --> R FUM = 1
+R_FUM = (1R_EX_o2_e & 1R_EX_succ_e)
+
+# 39: R EX o2 e = 1 R EX fum e = 1 --> R FUM = 1
+R_FUM = (1R_EX_o2_e & 1R_EX_fum_e)
+
+# 40: R EX o2 e = 1 AND R EX mal L e = 1 --> R FUM = 1
+R_FUM = (1R_EX_o2_e & 1R_EX_mal_L_e)
+
+# 41: R EX o2 e = 1 AND R EX glc e = 0 AND R EX lac D e = 0 --> R FUMt2 2 = 1
+R_FUMt2_2 = ((1R_EX_o2_e & (!0R_EX_glc_e)) & (!0R_EX_lac_D_e))
+
+# 42: R EX o2 e = 1 AND R EX succ e = 1 --> R FUMt2 2 = 1
+R_FUMt2_2 = (1R_EX_o2_e & 1R_EX_succ_e)
+
+# 43: R EX o2 e = 1 AND R EX fum e = 1 --> R FUMt2 2 = 1
+R_FUMt2_2 = (1R_EX_o2_e & 1R_EX_fum_e)
+
+# 44: R EX o2 e = 1 AND R EX mal L e = 1 --> R FUMt2 2 = 1
+R_FUMt2_2 = (1R_EX_o2_e & 1R_EX_mal_L_e)
+
+# 45: R EX o2 e = 1 AND R EX glc e = 0 AND R EX lac D e = 0 --> R MALt2 2 = 1
+R_MALt2_2 = ((1R_EX_o2_e & (!0R_EX_glc_e)) & (!0R_EX_lac_D_e))
+
+# 46: R EX o2 e = 1 AND R EX succ e = 1 --> R MALt2 2 = 1
+R_MALt2_2 = (1R_EX_o2_e & 1R_EX_succ_e)
+
+# 47: R EX o2 e = 1 AND R EX fum e = 1 --> R MALt2 2 = 1
+R_MALt2_2 = (1R_EX_o2_e & 1R_EX_fum_e)
+
+# 48: R EX o2 e = 1 AND R EX mal L e = 1 --> R MALt2 2 = 1
+R_MALt2_2 = (1R_EX_o2_e & 1R_EX_mal_L_e)
+
+# 49: R EX o2 e = 1 AND R EX glc e = 0 AND R EX lac D e = 0 --> R SUCCt2 2 = 1
+R_SUCCt2_2 = ((1R_EX_o2_e & (!0R_EX_glc_e)) & (!0R_EX_lac_D_e))
+
+# 50: R EX o2 e = 1 AND R EX succ e = 1 --> R SUCCt2 2 = 1
+R_SUCCt2_2 = (1R_EX_o2_e & 1R_EX_succ_e)
+
+# 51: R EX o2 e = 1 AND R EX fum e = 1 --> R SUCCt2 2 = 1
+R_SUCCt2_2 = (1R_EX_o2_e & 1R_EX_fum_e)
+
+# 52: R EX o2 e = 1 AND R EX mal L e = 1 --> R SUCCt2 2 = 1
+R_SUCCt2_2 = (1R_EX_o2_e & 1R_EX_mal_L_e)
+
+# 53: R EX o2 e = 0 AND R EX glc e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R FUMt2 2 = 0
+R_FUMt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_glc_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+# 54: R EX o2 e = 0 AND R EX lac D e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R FUMt2 2 = 0
+R_FUMt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_lac_D_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+# 55: R EX o2 e = 0 AND R EX glc e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R MALt2 2 = 0
+R_MALt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_glc_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+# 56: R EX o2 e = 0 AND R EX lac D e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R MALt2 2 = 0
+R_MALt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_lac_D_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+# 57: R EX o2 e = 0 AND R EX glc e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R SUCCt2 2 = 0
+R_SUCCt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_glc_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+# 58: R EX o2 e = 0 AND R EX lac D e = 1 AND R EX succ e = 0 AND R EX fum e = 0 AND R EX mal L e = 0 --> R SUCCt2 2 = 0
+R_SUCCt2_2 = (!(((((!0R_EX_o2_e) & 1R_EX_lac_D_e) & (!0R_EX_succ_e)) & (!0R_EX_fum_e)) & (!0R_EX_mal_L_e)))
+
+
+------------------------------------------------------------------------
+Conversion of inital gene regulatory file into format used by regEfmtool
+------------------------------------------------------------------------
+Usually, the original gene regulatory file comes in a different notation than the 
+gene rule input file used by regEfmtool. Typically, the gene regulatory files provided
+by biologists or biochemists have a syntax as follows:
+IF R1 = 1 AND R2 = 0 THEN R3=1
+IF R4 = 0 OR R2 = 1 THEN R1 = 0
+and so on ...
+
+This means that a specific set of values for the input reactions defines
+the value of the output reactions. This kind of format needs be transformed
+to the syntax used by regEfmtool.
+
+The Ecoli core model comes with a set of gene regulatory rules:
+http://gcrg.ucsd.edu/Downloads/EcoliCore
+
+These rules were checked by us for plausibility and inconsistency.
+Inconsistent rules were removed. The final set of rules is shown in
+the following list:
+ 1: IF R_EX_glc_e = 1     THEN R_EX_ac_e = 0 
+ 2: IF R_EX_glc_e = 1     THEN R_ICL = 0 
+ 3: IF R_EX_glc_e = 0     THEN R_FORt2 = 1 
+ 4: IF R_EX_glc_e = 0     THEN FORti = 1 
+ 5: IF R_EX_glc_e = 0     THEN R_GLNS = 1 
+ 6: IF R_EX_glc_e = 0     THEN R_PFL = 1 
+ 7: IF R_EX_glc_e = 0     THEN R_ACKr = 1 
+ 8: IF R_EX_glc_e = 0     THEN R_GLCpts = 0 
+ 9: IF R_EX_o2_e = 0      THEN R_FORt2 = 1 
+10: IF R_EX_o2_e = 0      THEN FORti = 1 
+11: IF R_EX_o2_e = 0      THEN R_FRD7 = 1 
+12: IF R_EX_o2_e = 0      THEN R_PFL = 1 
+13: IF R_EX_o2_e = 0      THEN R_ACKr = 1 
+14: IF R_EX_o2_e = 0      THEN R_MDH = 0 
+15: IF R_EX_o2_e = 0      THEN R_NADH16 = 0 
+16: IF R_EX_o2_e = 0      THEN R_ICL = 0 
+17: IF R_EX_glu_L_e = 1   THEN R_GLUDy = 0 
+18: IF R_EX_glu_L_e = 1   THEN R_GLUSy = 0 
+19: IF R_EX_nh4_e = 0     THEN R_GLUDy = 0 
+20: IF R_EX_nh4_e = 0     THEN R_GLUSy = 0 
+21: IF R_EX_pi_e = 0      THEN R_PIt2r = 0 
+22: IF R_EX_glc_e = 1     AND 
+       R_EX_ac_e = 0      THEN R_MALS = 0 
+23: IF R_EX_o2_e = 0      AND  
+       R_EX_ac_e = 0      THEN R_MALS = 0 
+24: IF R_EX_o2_e = 0      AND 
+       R_EX_ac_e = 0      THEN R_D_LACt2 = 0 
+25: IF R_EX_o2_e = 1      AND 
+       R_EX_ac_e = 1      THEN R_D_LACt2 = 1 
+26: IF R_EX_o2_e = 1      AND 
+       R_BIOMASS = 0      THEN R_ACALD = 0 
+27: IF R_EX_o2_e = 1      AND
+       R_BIOMASS = 0      THEN R_ALCD2x = 0 
+28: IF R_EX_o2_e = 0      AND
+       R_BIOMASS = 1      THEN R_ACALD = 1 
+29: IF R_EX_o2_e = 0      AND
+       R_BIOMASS = 1      THEN R_ALCD2x = 1 
+30: IF R_EX_glc_e = 0     AND 
+       R_EX_o2_e = 1      AND 
+       R_EX_ac_e = 1      THEN R_MALS = 1 
+31: IF R_EX_glc_e = 1     AND 
+       R_BIOMASS = 0      AND 
+       R_EX_o2_e = 0      THEN R_SUCDi = 0 
+32: IF R_EX_glc_e = 0     AND 
+       R_EX_o2_e = 1      THEN R_SUCDi = 1 
+33: IF R_BIOMASS = 1      AND 
+       R_EX_o2_e = 1      THEN R_SUCDi = 1 
+34: IF R_EX_succ_e = 1    THEN R_FRD7 = 1 
+35: IF R_EX_fum_e = 1     THEN R_FRD7 = 1 
+36: IF R_EX_mal_L_e = 1   THEN R_FRD7 = 1 
+37: IF R_EX_o2_e = 1      AND 
+       R_EX_glc_e = 0     THEN R_FUM = 1 
+38: IF R_EX_o2_e = 1      AND 
+       R_EX_succ_e = 1    THEN R_FUM = 1 
+39: IF R_EX_o2_e = 1      AND 
+       R_EX_fum_e = 1     THEN R_FUM = 1 
+40: IF R_EX_o2_e = 1      AND 
+       R_EX_mal_L_e = 1   THEN R_FUM = 1
+41: IF R_EX_o2_e = 1      AND 
+       R_EX_glc_e = 0     AND 
+       R_EX_lac_D_e = 0   THEN R_FUMt2_2 = 1  
+42: IF R_EX_o2_e = 1      AND 
+       R_EX_succ_e = 1    THEN R_FUMt2_2 = 1 
+43: IF R_EX_o2_e = 1      AND 
+       R_EX_fum_e = 1     THEN R_FUMt2_2 = 1 
+44: IF R_EX_o2_e = 1      AND 
+       R_EX_mal_L_e = 1   THEN R_FUMt2_2 = 1 
+45: IF R_EX_o2_e = 1      AND 
+       R_EX_glc_e = 0     AND 
+       R_EX_lac_D_e = 0   THEN R_MALt2_2 = 1  
+46: IF R_EX_o2_e = 1      AND 
+       R_EX_succ_e = 1    THEN R_MALt2_2 = 1 
+47: IF R_EX_o2_e = 1      AND 
+       R_EX_fum_e = 1     THEN R_MALt2_2 = 1 
+48: IF R_EX_o2_e = 1      AND 
+       R_EX_mal_L_e = 1   THEN R_MALt2_2 = 1 
+49: IF R_EX_o2_e = 1      AND 
+       R_EX_glc_e = 0     AND 
+       R_EX_lac_D_e = 0   THEN R_SUCCt2_2 = 1 
+50: IF R_EX_o2_e = 1      AND 
+       R_EX_succ_e = 1    THEN R_SUCCt2_2 = 1 
+51: IF R_EX_o2_e = 1      AND 
+       R_EX_fum_e = 1     THEN R_SUCCt2_2 = 1 
+52: IF R_EX_o2_e = 1      AND 
+       R_EX_mal_L_e = 1   THEN R_SUCCt2_2 = 1 
+53: IF R_EX_o2_e = 0      AND 
+       R_EX_glc_e = 1     AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_FUMt2_2 = 0 
+54: IF R_EX_o2_e = 0      AND 
+       R_EX_lac_D_e = 1   AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_FUMt2_2 = 0 
+55: IF R_EX_o2_e = 0      AND 
+       R_EX_glc_e = 1     AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_MALt2_2 = 0 
+56: IF R_EX_o2_e = 0      AND 
+       R_EX_lac_D_e = 1   AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_MALt2_2 = 0 
+57: IF R_EX_o2_e = 0      AND 
+       R_EX_glc_e = 1     AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_SUCCt2_2 = 0 
+58: IF R_EX_o2_e = 0      AND 
+       R_EX_lac_D_e = 1   AND 
+       R_EX_succ_e = 0    AND 
+       R_EX_fum_e = 0     AND 
+       R_EX_mal_L_e = 0   THEN R_SUCCt2_2 = 0
+
+In order to check if the conversion of the rules from this
+IF-THEN-format to the boolean notation used by the regEfmtool
+is correct a Perl program was written. This Perl program tested each boolean
+rule by executing the rule with all possible combinations of input values.
+Only the combination of input values given by Orth et al. must result in the defined output value.
+The output of a test run performed by the Perl program is given below:
+
+checking rule 1: R_EX_ac_e=(!1R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_EX_ac_e=UNDEF
+   R_EX_glc_e(idx=27)=1: R_EX_ac_e=FALSE
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 2: R_ICL=(!1R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_ICL=UNDEF
+   R_EX_glc_e(idx=27)=1: R_ICL=FALSE
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 3: R_FORt2=(!0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_FORt2=TRUE
+   R_EX_glc_e(idx=27)=1: R_FORt2=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 4: R_FORti=(!0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_FORti=TRUE
+   R_EX_glc_e(idx=27)=1: R_FORti=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 5: R_GLNS=(!0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_GLNS=TRUE
+   R_EX_glc_e(idx=27)=1: R_GLNS=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 6: R_PFL=(!0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_PFL=TRUE
+   R_EX_glc_e(idx=27)=1: R_PFL=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 7: R_ACKr=(!0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0: R_ACKr=TRUE
+   R_EX_glc_e(idx=27)=1: R_ACKr=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 8: R_GLCpts=(0R_EX_glc_e|0R_EX_glc_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_glc_e
+   R_EX_glc_e(idx=27)=0 R_EX_glc_e(idx=27)=0: R_GLCpts=FALSE
+   R_EX_glc_e(idx=27)=1 R_EX_glc_e(idx=27)=1: R_GLCpts=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 9: R_FORt2=(!0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0: R_FORt2=TRUE
+   R_EX_o2_e(idx=35)=1: R_FORt2=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 10: R_FORti=(!0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0: R_FORti=TRUE
+   R_EX_o2_e(idx=35)=1: R_FORti=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 11: R_FRD7=(!0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0: R_FRD7=TRUE
+   R_EX_o2_e(idx=35)=1: R_FRD7=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 12: R_PFL=(!0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0: R_PFL=TRUE
+   R_EX_o2_e(idx=35)=1: R_PFL=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 13: R_ACKr=(!0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0: R_ACKr=TRUE
+   R_EX_o2_e(idx=35)=1: R_ACKr=UNDEF
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 14: R_MDH=(0R_EX_o2_e|0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_o2_e(idx=35)=0: R_MDH=FALSE
+   R_EX_o2_e(idx=35)=1 R_EX_o2_e(idx=35)=1: R_MDH=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 15: R_NADH16=(0R_EX_o2_e|0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_o2_e(idx=35)=0: R_NADH16=FALSE
+   R_EX_o2_e(idx=35)=1 R_EX_o2_e(idx=35)=1: R_NADH16=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 16: R_ICL=(0R_EX_o2_e|0R_EX_o2_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_o2_e(idx=35)=0: R_ICL=FALSE
+   R_EX_o2_e(idx=35)=1 R_EX_o2_e(idx=35)=1: R_ICL=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 17: R_GLUDy=(!1R_EX_glu_L_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_glu_L_e
+   R_EX_glu_L_e(idx=29)=0: R_GLUDy=UNDEF
+   R_EX_glu_L_e(idx=29)=1: R_GLUDy=FALSE
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 18: R_GLUSy=(!1R_EX_glu_L_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_glu_L_e
+   R_EX_glu_L_e(idx=29)=0: R_GLUSy=UNDEF
+   R_EX_glu_L_e(idx=29)=1: R_GLUSy=FALSE
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 19: R_GLUDy=(0R_EX_nh4_e|0R_EX_nh4_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_nh4_e
+   R_EX_nh4_e(idx=34)=0 R_EX_nh4_e(idx=34)=0: R_GLUDy=FALSE
+   R_EX_nh4_e(idx=34)=1 R_EX_nh4_e(idx=34)=1: R_GLUDy=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 20: R_GLUSy=(0R_EX_nh4_e|0R_EX_nh4_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_nh4_e
+   R_EX_nh4_e(idx=34)=0 R_EX_nh4_e(idx=34)=0: R_GLUSy=FALSE
+   R_EX_nh4_e(idx=34)=1 R_EX_nh4_e(idx=34)=1: R_GLUSy=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 21: R_PIt2r=(0R_EX_pi_e|0R_EX_pi_e)
+   number of input reactions: 1
+   input reactions: 0R_EX_pi_e
+   R_EX_pi_e(idx=36)=0 R_EX_pi_e(idx=36)=0: R_PIt2r=FALSE
+   R_EX_pi_e(idx=36)=1 R_EX_pi_e(idx=36)=1: R_PIt2r=UNDEF
+   num. undef = 1, num. true = 0, num. false = 1
+
+checking rule 22: R_MALS=(!(1R_EX_glc_e&(!0R_EX_ac_e)))
+   number of input reactions: 2
+   input reactions: 1R_EX_glc_e 0R_EX_ac_e
+   R_EX_glc_e(idx=27)=0 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=0 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=1 R_EX_ac_e(idx=19)=0: R_MALS=FALSE
+   R_EX_glc_e(idx=27)=1 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   num. undef = 3, num. true = 0, num. false = 1
+
+checking rule 23: R_MALS=(!((!0R_EX_o2_e)&(!0R_EX_ac_e)))
+   number of input reactions: 2
+   input reactions: 0R_EX_ac_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=0: R_MALS=FALSE
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   num. undef = 3, num. true = 0, num. false = 1
+
+checking rule 24: R_D_LACt2=(!((!0R_EX_o2_e)&(!0R_EX_ac_e)))
+   number of input reactions: 2
+   input reactions: 0R_EX_ac_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=0: R_D_LACt2=FALSE
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=0: R_D_LACt2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=1: R_D_LACt2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=1: R_D_LACt2=UNDEF
+   num. undef = 3, num. true = 0, num. false = 1
+
+checking rule 25: R_D_LACt2=(1R_EX_o2_e&1R_EX_ac_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_ac_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=0: R_D_LACt2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=0: R_D_LACt2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=1: R_D_LACt2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=1: R_D_LACt2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 26: R_ACALD=(!(1R_EX_o2_e&(!0R_BIOMASS)))
+   number of input reactions: 2
+   input reactions: 0R_BIOMASS 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=0: R_ACALD=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=0: R_ACALD=FALSE
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=1: R_ACALD=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=1: R_ACALD=UNDEF
+   num. undef = 3, num. true = 0, num. false = 1
+
+checking rule 27: R_ALCD2x=(!(1R_EX_o2_e&(!0R_BIOMASS)))
+   number of input reactions: 2
+   input reactions: 0R_BIOMASS 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=0: R_ALCD2x=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=0: R_ALCD2x=FALSE
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=1: R_ALCD2x=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=1: R_ALCD2x=UNDEF
+   num. undef = 3, num. true = 0, num. false = 1
+
+checking rule 28: R_ACALD=((!0R_EX_o2_e)&1R_BIOMASS)
+   number of input reactions: 2
+   input reactions: 1R_BIOMASS 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=0: R_ACALD=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=0: R_ACALD=UNDEF
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=1: R_ACALD=TRUE
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=1: R_ACALD=UNDEF
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 29: R_ALCD2x=((!0R_EX_o2_e)&1R_BIOMASS)
+   number of input reactions: 2
+   input reactions: 1R_BIOMASS 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=0: R_ALCD2x=UNDEF
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=0: R_ALCD2x=UNDEF
+   R_EX_o2_e(idx=35)=0 R_BIOMASS(idx=12)=1: R_ALCD2x=TRUE
+   R_EX_o2_e(idx=35)=1 R_BIOMASS(idx=12)=1: R_ALCD2x=UNDEF
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 30: R_MALS=(((!0R_EX_glc_e)&1R_EX_o2_e)&1R_EX_ac_e)
+   number of input reactions: 3
+   input reactions: 0R_EX_glc_e 1R_EX_ac_e 1R_EX_o2_e
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=1: R_MALS=TRUE
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=0: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=0 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=1 R_EX_ac_e(idx=19)=1: R_MALS=UNDEF
+   num. undef = 7, num. true = 1, num. false = 0
+
+checking rule 31: R_SUCDi=(!((1R_EX_glc_e&(!0R_BIOMASS))&(!0R_EX_o2_e)))
+   number of input reactions: 3
+   input reactions: 0R_BIOMASS 1R_EX_glc_e 0R_EX_o2_e
+   R_EX_glc_e(idx=27)=0 R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=0 R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=1 R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=0: R_SUCDi=FALSE
+   R_EX_glc_e(idx=27)=1 R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=0 R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=0 R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=1 R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=1 R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   num. undef = 7, num. true = 0, num. false = 1
+
+checking rule 32: R_SUCDi=((!0R_EX_glc_e)&1R_EX_o2_e)
+   number of input reactions: 2
+   input reactions: 0R_EX_glc_e 1R_EX_o2_e
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=0 R_EX_o2_e(idx=35)=1: R_SUCDi=TRUE
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_EX_glc_e(idx=27)=1 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 33: R_SUCDi=(1R_BIOMASS&1R_EX_o2_e)
+   number of input reactions: 2
+   input reactions: 1R_BIOMASS 1R_EX_o2_e
+   R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_BIOMASS(idx=12)=0 R_EX_o2_e(idx=35)=1: R_SUCDi=UNDEF
+   R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=0: R_SUCDi=UNDEF
+   R_BIOMASS(idx=12)=1 R_EX_o2_e(idx=35)=1: R_SUCDi=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 34: R_FRD7=(1R_EX_succ_e|1R_EX_succ_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_succ_e
+   R_EX_succ_e(idx=38)=0 R_EX_succ_e(idx=38)=0: R_FRD7=UNDEF
+   R_EX_succ_e(idx=38)=1 R_EX_succ_e(idx=38)=1: R_FRD7=TRUE
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 35: R_FRD7=(1R_EX_fum_e|1R_EX_fum_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_fum_e
+   R_EX_fum_e(idx=26)=0 R_EX_fum_e(idx=26)=0: R_FRD7=UNDEF
+   R_EX_fum_e(idx=26)=1 R_EX_fum_e(idx=26)=1: R_FRD7=TRUE
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 36: R_FRD7=(1R_EX_mal_L_e|1R_EX_mal_L_e)
+   number of input reactions: 1
+   input reactions: 1R_EX_mal_L_e
+   R_EX_mal_L_e(idx=33)=0 R_EX_mal_L_e(idx=33)=0: R_FRD7=UNDEF
+   R_EX_mal_L_e(idx=33)=1 R_EX_mal_L_e(idx=33)=1: R_FRD7=TRUE
+   num. undef = 1, num. true = 1, num. false = 0
+
+checking rule 37: R_FUM=(1R_EX_o2_e&(!0R_EX_glc_e))
+   number of input reactions: 2
+   input reactions: 0R_EX_glc_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0: R_FUM=TRUE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1: R_FUM=UNDEF
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 38: R_FUM=(1R_EX_o2_e&1R_EX_succ_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_succ_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=1: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=1: R_FUM=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 39: R_FUM=(1R_EX_o2_e&1R_EX_fum_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_fum_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=1: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=1: R_FUM=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 40: R_FUM=(1R_EX_o2_e&1R_EX_mal_L_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_mal_L_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=0: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=1: R_FUM=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=1: R_FUM=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 41: R_FUMt2_2=((1R_EX_o2_e&(!0R_EX_glc_e))&(!0R_EX_lac_D_e))
+   number of input reactions: 3
+   input reactions: 0R_EX_glc_e 0R_EX_lac_D_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_FUMt2_2=TRUE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_FUMt2_2=UNDEF
+   num. undef = 7, num. true = 1, num. false = 0
+
+checking rule 42: R_FUMt2_2=(1R_EX_o2_e&1R_EX_succ_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_succ_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=1: R_FUMt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 43: R_FUMt2_2=(1R_EX_o2_e&1R_EX_fum_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_fum_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=1: R_FUMt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 44: R_FUMt2_2=(1R_EX_o2_e&1R_EX_mal_L_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_mal_L_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 45: R_MALt2_2=((1R_EX_o2_e&(!0R_EX_glc_e))&(!0R_EX_lac_D_e))
+   number of input reactions: 3
+   input reactions: 0R_EX_glc_e 0R_EX_lac_D_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_MALt2_2=TRUE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_MALt2_2=UNDEF
+   num. undef = 7, num. true = 1, num. false = 0
+
+checking rule 46: R_MALt2_2=(1R_EX_o2_e&1R_EX_succ_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_succ_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=1: R_MALt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 47: R_MALt2_2=(1R_EX_o2_e&1R_EX_fum_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_fum_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=1: R_MALt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 48: R_MALt2_2=(1R_EX_o2_e&1R_EX_mal_L_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_mal_L_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 49: R_SUCCt2_2=((1R_EX_o2_e&(!0R_EX_glc_e))&(!0R_EX_lac_D_e))
+   number of input reactions: 3
+   input reactions: 0R_EX_glc_e 0R_EX_lac_D_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=0: R_SUCCt2_2=TRUE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_lac_D_e(idx=32)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_lac_D_e(idx=32)=1: R_SUCCt2_2=UNDEF
+   num. undef = 7, num. true = 1, num. false = 0
+
+checking rule 50: R_SUCCt2_2=(1R_EX_o2_e&1R_EX_succ_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_succ_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_succ_e(idx=38)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_succ_e(idx=38)=1: R_SUCCt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 51: R_SUCCt2_2=(1R_EX_o2_e&1R_EX_fum_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_fum_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_fum_e(idx=26)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_fum_e(idx=26)=1: R_SUCCt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 52: R_SUCCt2_2=(1R_EX_o2_e&1R_EX_mal_L_e)
+   number of input reactions: 2
+   input reactions: 1R_EX_mal_L_e 1R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=TRUE
+   num. undef = 3, num. true = 1, num. false = 0
+
+checking rule 53: R_FUMt2_2=(!(((((!0R_EX_o2_e)&1R_EX_glc_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_glc_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+
+checking rule 54: R_FUMt2_2=(!(((((!0R_EX_o2_e)&1R_EX_lac_D_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_lac_D_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_FUMt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+
+checking rule 55: R_MALt2_2=(!(((((!0R_EX_o2_e)&1R_EX_glc_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_glc_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+
+checking rule 56: R_MALt2_2=(!(((((!0R_EX_o2_e)&1R_EX_lac_D_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_lac_D_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_MALt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+
+checking rule 57: R_SUCCt2_2=(!(((((!0R_EX_o2_e)&1R_EX_glc_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_glc_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_glc_e(idx=27)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+
+checking rule 58: R_SUCCt2_2=(!(((((!0R_EX_o2_e)&1R_EX_lac_D_e)&(!0R_EX_succ_e))&(!0R_EX_fum_e))&(!0R_EX_mal_L_e)))
+   number of input reactions: 5
+   input reactions: 0R_EX_fum_e 0R_EX_mal_L_e 1R_EX_lac_D_e 0R_EX_succ_e 0R_EX_o2_e
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=FALSE
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=0 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=0: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=0 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=0 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=0 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   R_EX_o2_e(idx=35)=1 R_EX_lac_D_e(idx=32)=1 R_EX_succ_e(idx=38)=1 R_EX_fum_e(idx=26)=1 R_EX_mal_L_e(idx=33)=1: R_SUCCt2_2=UNDEF
+   num. undef = 31, num. true = 0, num. false = 1
+

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types
+END
+MLDouble.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLDouble.java
+END
+MLChar.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLChar.java
+END
+MLEmptyArray.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLEmptyArray.java
+END
+MLSparse.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLSparse.java
+END
+MLArray.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLArray.java
+END
+MLCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLCell.java
+END
+MLStructure.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLStructure.java
+END
+MLNumericArray.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/MLNumericArray.java
+END
+GenericArrayCreator.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/types/GenericArrayCreator.java
+END

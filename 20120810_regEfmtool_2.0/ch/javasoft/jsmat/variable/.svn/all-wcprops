@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable
+END
+MatCell.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatCell.java
+END
+MatDoubleMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatDoubleMatrix.java
+END
+MatReserved.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatReserved.java
+END
+MatReservedStructure.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatReservedStructure.java
+END
+MatStructure.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatStructure.java
+END
+MatCharMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatCharMatrix.java
+END
+MatMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatMatrix.java
+END
+MatReservedMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatReservedMatrix.java
+END
+MatVariable.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatVariable.java
+END
+MatReservedComplex.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatReservedComplex.java
+END
+MatAllocated.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/jsmat/variable/MatAllocated.java
+END

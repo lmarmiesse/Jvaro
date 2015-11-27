@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress
+END
+FileProgressWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/FileProgressWriter.java
+END
+ProgressNotifiable.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/ProgressNotifiable.java
+END
+IntProgressAggregator.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/IntProgressAggregator.java
+END
+ProgressType.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/ProgressType.java
+END
+ProgressAggregator.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/ProgressAggregator.java
+END
+AbstractStringProgressWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/AbstractStringProgressWriter.java
+END
+ProgressMonitor.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/ProgressMonitor.java
+END
+JProgress.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/progress/JProgress.java
+END

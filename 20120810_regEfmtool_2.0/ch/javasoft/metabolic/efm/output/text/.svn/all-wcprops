@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text
+END
+NumberTextOutputFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text/NumberTextOutputFormatter.java
+END
+DoubleTextOutputFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text/DoubleTextOutputFormatter.java
+END
+SignTextOutputFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text/SignTextOutputFormatter.java
+END
+AbstractTextOutputFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text/AbstractTextOutputFormatter.java
+END
+BinaryTextOutputFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/output/text/BinaryTextOutputFormatter.java
+END

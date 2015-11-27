@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging
+END
+SystemProperties.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/SystemProperties.java
+END
+Loggers.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/Loggers.java
+END
+LogFormatter.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LogFormatter.java
+END
+StandardErrHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/StandardErrHandler.java
+END
+LogPrintStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LogPrintStream.java
+END
+LevelFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LevelFilter.java
+END
+Loggers.properties
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/Loggers.properties
+END
+LogWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LogWriter.java
+END
+Loggers.properties.plain
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/Loggers.properties.plain
+END
+Loggers.properties.verbose
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/Loggers.properties.verbose
+END
+AbstractStandardHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/AbstractStandardHandler.java
+END
+AutoFlushStreamHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/AutoFlushStreamHandler.java
+END
+StandardOutHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/StandardOutHandler.java
+END
+LogPrintWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LogPrintWriter.java
+END
+LogFragmenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/LogFragmenter.java
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/util/logging/.cvsignore
+END

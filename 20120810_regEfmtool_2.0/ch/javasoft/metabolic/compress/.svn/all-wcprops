@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress
+END
+CompressionUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/CompressionUtil.java
+END
+CompressionMethod.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/CompressionMethod.java
+END
+LogPkg.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/LogPkg.java
+END
+DuplicateGeneCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/DuplicateGeneCompressor.java
+END
+StoichMatrixCompressor.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/StoichMatrixCompressor.java
+END
+CompressionStatistics.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/CompressionStatistics.java
+END
+StoichMatrixCompressedMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/StoichMatrixCompressedMetabolicNetwork.java
+END
+CompressedMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/compress/CompressedMetabolicNetwork.java
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/impl
+END
+LogPkg.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/impl/LogPkg.java
+END
+AbstractDoubleDescriptionImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/impl/AbstractDoubleDescriptionImpl.java
+END
+RecoverableSequentialDoubleDescriptionImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/impl/RecoverableSequentialDoubleDescriptionImpl.java
+END
+SequentialDoubleDescriptionImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/impl/SequentialDoubleDescriptionImpl.java
+END

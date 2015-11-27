@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io
+END
+LengthTrackingOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/LengthTrackingOutputStream.java
+END
+Files.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/Files.java
+END
+PrintDataOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/PrintDataOutputStream.java
+END
+DataInputInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/DataInputInputStream.java
+END
+NullInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/NullInputStream.java
+END
+DataOutputOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/DataOutputOutputStream.java
+END
+NullOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/NullOutputStream.java
+END
+WriterOutputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/WriterOutputStream.java
+END
+FileEndingFileFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/FileEndingFileFilter.java
+END
+Print.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/Print.java
+END
+AbstractDataInput.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/AbstractDataInput.java
+END
+AbstractDataOutput.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/AbstractDataOutput.java
+END
+ReaderInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/ReaderInputStream.java
+END
+Streams.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/io/Streams.java
+END

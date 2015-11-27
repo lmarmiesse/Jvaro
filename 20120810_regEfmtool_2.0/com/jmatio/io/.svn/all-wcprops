@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io
+END
+MatFileReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatFileReader.java
+END
+MatFileFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatFileFilter.java
+END
+MatlabIOException.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatlabIOException.java
+END
+MatFileHeader.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatFileHeader.java
+END
+MatFileInputStream.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatFileInputStream.java
+END
+MatTag.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatTag.java
+END
+MatFileWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/com/jmatio/io/MatFileWriter.java
+END

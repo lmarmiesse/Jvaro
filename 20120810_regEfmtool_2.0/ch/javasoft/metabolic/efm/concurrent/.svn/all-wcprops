@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent
+END
+ImmediateReleasePolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/ImmediateReleasePolicy.java
+END
+RankUpdateToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/RankUpdateToken.java
+END
+ReleasePolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/ReleasePolicy.java
+END
+ConcurrentToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/ConcurrentToken.java
+END
+LogPkg.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/LogPkg.java
+END
+AbstractConcurrentToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/AbstractConcurrentToken.java
+END
+SemaphoreConcurrentToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/SemaphoreConcurrentToken.java
+END
+WaitForHalfReleasePolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/WaitForHalfReleasePolicy.java
+END
+TimeoutWaitingReleasePolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/TimeoutWaitingReleasePolicy.java
+END
+ThreadFinalizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/concurrent/ThreadFinalizer.java
+END

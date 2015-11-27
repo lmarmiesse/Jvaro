@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl
+END
+AbstractEqualityCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/AbstractEqualityCone.java
+END
+DefaultEqualityCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/DefaultEqualityCone.java
+END
+AbstractPolyhedralCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/AbstractPolyhedralCone.java
+END
+AbstractInequalityCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/AbstractInequalityCone.java
+END
+DefaultPolyhedralCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/DefaultPolyhedralCone.java
+END
+DefaultInequalityCone.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/polco/impl/DefaultInequalityCone.java
+END

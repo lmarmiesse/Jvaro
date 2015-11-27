@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl
+END
+AbstractLeafNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/AbstractLeafNode.java
+END
+AbstractTreeTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/AbstractTreeTraverser.java
+END
+SubtreePairTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/SubtreePairTraverser.java
+END
+MinCardinalityAdjacencyPrecondition.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/MinCardinalityAdjacencyPrecondition.java
+END
+AbstractNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/AbstractNode.java
+END
+AbstractInterNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/AbstractInterNode.java
+END
+AbstractTreePairTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/AbstractTreePairTraverser.java
+END
+DefaultTreePairTraverser.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/impl/DefaultTreePairTraverser.java
+END

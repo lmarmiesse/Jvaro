@@ -1,0 +1,79 @@
+README - regEfmtool version 2.0
+===============================
+
+Copyright 2012 Christian Jungreuthmayer
+
+This README covers the following sections:
+1. INSTALLATION
+2. COMPILATION
+3. HOW TO RUN THE PROVIDED TEST CASES
+4. MISCELLANEOUS
+
+regEfmtool is written in Java and, hence, a multi-platform program (Linux, MacOS X, Windows,...).
+This README only covers installation, compilation and operation under Linux.
+We tested regEfmtool on Ubuntu Linux 11.04 and MacOS X 10.7.
+However, installation and usage of regEfmtool on other platforms is supposed to be easy.
+
+regEfmtool is an extension ofo the original efmtool by Marco Terzer (http://www.csb.ethz.ch/tools/efmtool/).
+
+Important:
+The implementation of regEfmtool is only a proof of concept.
+We tried to implement the filtering of modes as non-invasive as possible.
+Hence, parts of the new code disobey the standard best practice guidelines,
+but might assist a potential programmer in incorporating her/his own new ideas.
+Additionally, a more thorough implementation will definitely result in a performance gain.
+Of course, the results obtained by this version of the regEfmtool were double-checked
+for plausibility and correctness. We are not aware of any bugs or that the extension to the original efmtool
+produces incorrect results. But as any humble programmer we are sure regEfmtool contains bugs.
+If you find bugs please report them to christian.jungreuthmayer@acib.at
+
+
+1. INSTALLATION
+===============
+
+regEfmtool is published as a zipped tar-file.
+First, download the zipped tar-file which is typically called something like 20120716_regEfmtool_2.0.tar.gz.
+In order to install the regEfmtool just create a proper directory,
+e.g. /opt/regEfmtool. Change to the newly created directory by using 'cd /opt/regEfmtool'.
+The installation is simply done by untaring the zipped archive file, e.g. by executing
+tar -xvzf /tmp/20120716_regEfmtool_2.0.tar.gz
+
+2. COMPILATION
+==============
+
+The published archive file of the regEfmfile comes with a pre-compiled version.
+This pre-compilation was done using JDK-1.7.0. Compilation of regEfmtool can be done
+using the provided Makefile which can be found in the archive's root directory,
+e.g. /opt/regEfmtool/20120716_regEfmtool_2.0/Makefile. Open the Makefile with your favorite editor
+and adapt the two variables (JAR and JAVAC) according to your system installation.
+Save the changes and simply execute:
+make
+make jarfile
+
+Note:
+a) The 'make jarfile' overwrites the pre-compilied version of the regEfmtool.
+b) We only tested regEfmtool with JDK-1.7.0.
+c) regEfmtool does not work with Java version less than JDK-1.7.
+d) Other java versions have not been used by us, yet.
+e) We did not develop, use and test regEfmtool with Eclipse or any other IDE.
+
+In order to delete all compiled class files execute:
+make clean
+
+3. HOW TO RUN THE PROVIDED TEST CASES
+=====================================
+
+The published package also comes with some test cases which can be found in the
+folder 'examples', e.g. /opt/regEfmtool/20120716_regEfmtool_2.0/examples. These test cases
+can simply be run by executing the provided start scripts, e.g. start_regEfmtool_simple_1:
+cd /opt/regEfmtool/20120716_regEfmtool_2.0/examples
+./start_regEfmtool_simple_1
+
+If you experience problems make sure that the program 'java' is installed on your system
+and that the PATH variable is set accordingly.
+
+4. MISCELLANEOUS
+================
+
+Further information can be found in the file README_GENERULE,
+which contains details about the syntax of the gene rule file.

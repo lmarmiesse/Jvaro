@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created by JSBMLexample version 1.0 on 2015-09-27 at 14:09:25 GMT with JSBML version 1.0-rc1. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+  <model id="model">
+    <listOfCompartments>
+      <compartment id="internal"/>
+      <compartment id="external"/>
+    </listOfCompartments>
+  </model>
+</sbml>

@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl
+END
+DefaultReactionConstraints.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultReactionConstraints.java
+END
+AbstractFluxDistribution.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/AbstractFluxDistribution.java
+END
+StoichMatrixMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/StoichMatrixMetabolicNetwork.java
+END
+DefaultReaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultReaction.java
+END
+NormalizedRatiosReaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/NormalizedRatiosReaction.java
+END
+FractionNumberFluxDistribution.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/FractionNumberFluxDistribution.java
+END
+DefaultMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultMetabolicNetwork.java
+END
+FractionNumberStoichMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/FractionNumberStoichMetabolicNetwork.java
+END
+DefaultFluxDistribution.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultFluxDistribution.java
+END
+FilteredMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/FilteredMetabolicNetwork.java
+END
+ConstrainedReversibilitiesMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/ConstrainedReversibilitiesMetabolicNetwork.java
+END
+AbstractReaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/AbstractReaction.java
+END
+DefaultMetaboliteRatio.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultMetaboliteRatio.java
+END
+DefaultMetabolite.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultMetabolite.java
+END
+AbstractNestedReaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/AbstractNestedReaction.java
+END
+AbstractMetabolicNetwork.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/AbstractMetabolicNetwork.java
+END
+AbstractNamedReaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/AbstractNamedReaction.java
+END
+DefaultMetabolicNetworkVisitor.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/impl/DefaultMetabolicNetworkVisitor.java
+END

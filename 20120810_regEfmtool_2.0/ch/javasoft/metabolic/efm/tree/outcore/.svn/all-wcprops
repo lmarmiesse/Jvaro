@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore
+END
+PersistentNodeEntity.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentNodeEntity.java
+END
+PersistentNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentNode.java
+END
+PersistentInterNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentInterNode.java
+END
+PersistentBitPatternTree.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentBitPatternTree.java
+END
+PersistentLeafNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentLeafNode.java
+END
+PersistentNodeEntityMarshaller.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/metabolic/efm/tree/outcore/PersistentNodeEntityMarshaller.java
+END

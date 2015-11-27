@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface
+END
+DoubleMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/DoubleMatrix.java
+END
+MatrixBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/MatrixBase.java
+END
+ReadableIntMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableIntMatrix.java
+END
+WritableIntRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableIntRationalMatrix.java
+END
+ReadableLongMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableLongMatrix.java
+END
+BigIntegerMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/BigIntegerMatrix.java
+END
+WritableLongRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableLongRationalMatrix.java
+END
+IntRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/IntRationalMatrix.java
+END
+WritableIntMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableIntMatrix.java
+END
+ReadableBigIntegerRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableBigIntegerRationalMatrix.java
+END
+LongRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/LongRationalMatrix.java
+END
+WritableLongMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableLongMatrix.java
+END
+ReadableDoubleMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableDoubleMatrix.java
+END
+IntMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/IntMatrix.java
+END
+ReadableVector.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableVector.java
+END
+ReadableMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableMatrix.java
+END
+LongMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/LongMatrix.java
+END
+ReadableBigIntegerMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableBigIntegerMatrix.java
+END
+WritableBigIntegerRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableBigIntegerRationalMatrix.java
+END
+ReadableIntRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableIntRationalMatrix.java
+END
+WritableDoubleMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableDoubleMatrix.java
+END
+WritableVector.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableVector.java
+END
+DoubleVector.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/DoubleVector.java
+END
+VectorBase.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/VectorBase.java
+END
+RationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/RationalMatrix.java
+END
+BigIntegerRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/BigIntegerRationalMatrix.java
+END
+ReadableLongRationalMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/ReadableLongRationalMatrix.java
+END
+WritableBigIntegerMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableBigIntegerMatrix.java
+END
+WritableMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/cpr_metabo/!svn/ver/117/elo_debut/20120810_regEfmtool_2.0/ch/javasoft/smx/iface/WritableMatrix.java
+END
