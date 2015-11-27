@@ -1,5 +1,7 @@
 res/*
 
+*.class
+bin/*
+
 recent.txt
 dataBase.xml
-/bin
