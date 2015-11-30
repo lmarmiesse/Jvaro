@@ -25,7 +25,7 @@ public interface MetabolicNetworkItf {
 	public void AddMetabolite(String name, String description, boolean internal);
 
 	public void addReaction(String name, Map<Metabolite, Double> reactants,
-			Map<Metabolite, Double> products, boolean reversible);
+			Map<Metabolite, Double> products, boolean reversible,String notes);
 
 	public void delReaction(String name);
 

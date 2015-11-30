@@ -73,7 +73,7 @@ public class ReactionFrame extends PopUpAbs {
 		this.enzName = enzName;
 		setTitle("Reaction");
 
-		Dimension d = new Dimension(200, 200);
+		Dimension d = new Dimension(300, 300);
 
 		// columns names
 		String col1 = "Name";
@@ -91,7 +91,7 @@ public class ReactionFrame extends PopUpAbs {
 
 		panelNorth.setLayout(new GridLayout(2, 2));
 
-		panelNorth.add(new JLabel("Enzyme name", JLabel.CENTER));
+		panelNorth.add(new JLabel("Reaction name", JLabel.CENTER));
 		panelNorth.add(name);
 		panelNorth.add(new JLabel("Reversible", JLabel.CENTER));
 		panelNorth.add(reversible);
@@ -197,13 +197,17 @@ public class ReactionFrame extends PopUpAbs {
 		metabolites = new JList(ListModel);
 		metabolites.setSelectedIndex(0);
 		metabolites.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		metabolites.setPreferredSize(new Dimension(400, 400));
 		stochiometry = new JTextField(3);
 
 		JPanel panelMetabo = new JPanel();
 		panelMetabo.setLayout(new BoxLayout(panelMetabo, BoxLayout.PAGE_AXIS));
-		panelMetabo.add(new JScrollPane(metabolites));
+		JScrollPane metabScrollPane = new JScrollPane(metabolites);
+		metabScrollPane.setPreferredSize(new Dimension(400, 300));
+		panelMetabo.add(metabScrollPane);
 		panelMetabo.add(new JLabel("Stochiometry"));
 		panelMetabo.add(stochiometry);
+		
 
 		JPanel panelReaction = new JPanel();
 
@@ -213,6 +217,7 @@ public class ReactionFrame extends PopUpAbs {
 		panelReaction.add(panelMetabo);
 		panelReaction.add(buttonRight);
 		panelReaction.add(panelProduct);
+		
 
 		add(panelNorth);
 		add(new JSeparator());

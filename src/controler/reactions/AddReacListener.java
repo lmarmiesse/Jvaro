@@ -51,7 +51,7 @@ public class AddReacListener implements ActionListener {
 				boolean reversible = f.getReversible();
 				Map<Metabolite, Double> r = f.getReactants();
 				Map<Metabolite, Double> p = f.getProducts();
-				controler.addReaction(enzyme, r, p, reversible);
+				controler.addReaction(enzyme, r, p, reversible,"");
 				controler.notifyObservers();
 				}
 				else {

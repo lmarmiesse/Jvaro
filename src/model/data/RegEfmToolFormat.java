@@ -102,7 +102,7 @@ public class RegEfmToolFormat implements Format {
 			String reacName = reactions[a].replace("\"", "");
 			int rev = Integer.parseInt(reversible[a].replace("\"", ""));
 			boolean r = (rev != 0);
-			network.addReaction(reacName, reactants, products, r);
+			network.addReaction(reacName, reactants, products, r,"");
 		}
 
 		// run through matrix

@@ -220,8 +220,9 @@ public class MainControler extends Observable {
 
 	}
 
-	public void addReaction(String enzyme, Map<Metabolite, Double> r, Map<Metabolite, Double> p, boolean reversible) {
-		project.getNetwork().addReaction(enzyme, r, p, reversible);
+	public void addReaction(String enzyme, Map<Metabolite, Double> r, Map<Metabolite, Double> p, boolean reversible,
+			String notes) {
+		project.getNetwork().addReaction(enzyme, r, p, reversible, notes);
 	}
 
 	public void loadNetwork(File[] file) throws ClassNotFoundException, IOException {

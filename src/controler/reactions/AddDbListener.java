@@ -67,7 +67,7 @@ public class AddDbListener implements ActionListener {
 			}
 
 			dbNetwork.addReaction(r.getName(), r.getReactants(),
-					r.getProducts(), r.isReversible());
+					r.getProducts(), r.isReversible(),r.getNotes());
 
 		}
 

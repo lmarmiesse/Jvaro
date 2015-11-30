@@ -37,10 +37,10 @@ public class MetabolicNetwork implements MetabolicNetworkItf, Serializable {
 	}
 
 	public void addReaction(String name, Map<Metabolite, Double> reactants, Map<Metabolite, Double> products,
-			boolean reversible) {
+			boolean reversible, String notes) {
 		name = formatName(name);
 		if (!this.hasName(name)) {
-			reactions.add(new Reaction(name, reactants, products, reversible));
+			reactions.add(new Reaction(name, reactants, products, reversible, notes));
 		}
 	}
 

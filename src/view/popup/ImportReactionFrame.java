@@ -150,7 +150,7 @@ public class ImportReactionFrame extends PopUpAbs {
 					okPressed = true;
 					
 					for (Reaction reac : choiceList){
-						controler.getNetwork().addReaction(reac.getName(), reac.getReactants(), reac.getProducts(), reac.isReversible());
+						controler.getNetwork().addReaction(reac.getName(), reac.getReactants(), reac.getProducts(), reac.isReversible(),reac.getNotes());
 						for (Metabolite m : reac.getListProducts()) {
 						    controler.getNetwork().AddMetabolite(m.getName(), m.getDescription(), m.isInternal());
 						} 

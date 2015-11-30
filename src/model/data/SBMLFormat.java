@@ -93,8 +93,13 @@ public class SBMLFormat implements Format {
 					products.put(metab, sr.getStoichiometry());
 				}
 
-				network.addReaction(r.getId(), reactants, products,
-						r.isReversible());
+				try {
+					network.addReaction(r.getId(), reactants, products,
+							r.isReversible(),r.getNotesString());
+				} catch (XMLStreamException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 
@@ -157,6 +162,8 @@ public class SBMLFormat implements Format {
 				sr.setStoichiometry(entry.getValue());
 
 			}
+			
+			jr.setNotes(r.getNotes());
 
 			model.addReaction(jr);
 		}

@@ -121,7 +121,7 @@ public class MetatoolFormat implements Format {
 				network.addReaction(getEnzyme(equation),
 						getReactants(network, equation),
 						getProducts(network, equation),
-						isReversible(equation, enzRevData));
+						isReversible(equation, enzRevData),"");
 
 			}
 

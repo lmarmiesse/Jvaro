@@ -30,19 +30,26 @@ public class Reaction implements Serializable {
 	private Map<Metabolite, Double> reactants;// metabolite +  stoechimoetrie
 	private Map<Metabolite, Double> products;
 	private boolean reversible;
+	
+	private String notes;
 
 	public Reaction(String name, Map<Metabolite, Double> reactants,
-			Map<Metabolite, Double> products, boolean reversible) {
+			Map<Metabolite, Double> products, boolean reversible,String notes) {
 
 		this.name = name;
 		this.reactants = reactants;
 		this.products = products;
 		this.reversible = reversible;
+		this.notes=notes;
 
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getNotes() {
+		return notes;
 	}
 
 	public void setReversible(boolean r) {
