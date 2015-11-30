@@ -33,6 +33,8 @@ import javax.swing.JProgressBar;
 import model.ElementaryMode;
 import model.Reaction;
 
+import controler.Download;
+
 public class DownloadContentThread extends Thread {
 
 	private List<ElementaryMode> modes;

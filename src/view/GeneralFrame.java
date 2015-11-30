@@ -52,12 +52,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import model.data.Format;
-import model.data.MetatoolFormat;
-import model.data.ProjectFormat;
-import model.data.SBMLFormat;
-import view.popup.AboutFrame;
-import view.popup.ImportReactionFrame;
 import controler.MainControler;
 import controler.NewProjectListener;
 import controler.Var;
@@ -69,6 +63,12 @@ import controler.rule.AddRuleListener;
 import controler.save.ButtonSaveListener;
 import controler.save.MenuSaveListener;
 import controler.visu.VisuListener;
+import model.data.Format;
+import model.data.MetatoolFormat;
+import model.data.ProjectFormat;
+import model.data.SBMLFormat;
+import view.popup.AboutFrame;
+import view.popup.ImportReactionFrame;
 
 public class GeneralFrame extends JFrame implements Observer {
 

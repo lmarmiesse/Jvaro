@@ -54,6 +54,8 @@ import view.RightPanel;
 import view.popup.LaunchRegEfmToolFrame;
 import controler.MainControler;
 
+import controler.externalPrograms.ExternalProgramsHandler;
+
 public class RegEfmToolHandler extends Thread implements
 		ExternalProgramsHandler {
 

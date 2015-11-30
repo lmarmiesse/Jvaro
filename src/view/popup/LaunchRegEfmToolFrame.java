@@ -38,6 +38,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import view.popup.PopUpAbs;;
+
 public class LaunchRegEfmToolFrame extends PopUpAbs {
 
 	JRadioButton defaultAdvancedButton;
