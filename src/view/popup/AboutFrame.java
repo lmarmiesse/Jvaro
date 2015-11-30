@@ -61,7 +61,7 @@ public class AboutFrame extends PopUpAbs implements HyperlinkListener {
 				.setText("<html><h2 align='center'> User interface for RegEfmTool </h2>    "
 						+ "<p align='center'>2013</p>"
 						+ "<br/>"
-						+ "<p align='center'><a  href='http://christophe.djemiel.emi.u-bordeaux1.fr/'>J-VARO web site</a></p>"
+						//+ "<p align='center'><a  href='http://christophe.djemiel.emi.u-bordeaux1.fr/'>J-VARO web site</a></p>"
 						+ "<br/>"
 						+ "<p align='center'><a  href='http://www.youtube.com/user/projectjvaro?feature=watch/'>YouTube channel</a></p>"
 						+ "<br/>"
