@@ -63,4 +63,8 @@ public class Var {
 	//extension
 	public static String extension = ".jvr";
 	
+	
+	
+	public static String versionNumber = "1.0"; 
+	
 }
